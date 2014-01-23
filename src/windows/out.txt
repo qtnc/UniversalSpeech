@@ -1,0 +1,19 @@
+VS_VERSION_INFO
+StringFileInfo
+040904B0
+CompanyName
+NV Access Limited
+FileDescription
+NVDA application
+FileVersion
+0.0.0.0
+LegalCopyright
+Copyright (C) 2006-2013 NVDA Contributors
+OriginalFilename
+nvda_noUIAccess.exe
+ProductName
+NVDA
+ProductVersion
+2013.1.1
+VarFileInfo
+Translation

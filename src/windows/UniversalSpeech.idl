@@ -1,0 +1,35 @@
+// The IDL file for UniversalSpeech.DLL
+//
+// {4EB1B5DE-592E-4CBA-8230-D21D7456C38C} = Type library's GUID
+// {06C98751-54F6-433D-A751-D180789A854D} = IScreenReaderAPI object's GUID
+// {C0BC1432-993C-4D7B-A4BB-A42646226FA1} = IScreenReaderAPI VTable's GUID
+
+[uuid(4EB1B5DE-592E-4CBA-8230-D21D7456C38C), version(1.0), helpstring("Universal speech COM Server")]
+library IUniversalSpeech
+{
+	importlib("STDOLE2.TLB");
+
+	[uuid(C0BC1432-993C-4D7B-A4BB-A42646226FA1), dual, oleautomation, hidden, nonextensible]
+	interface IUniversalSpeechVTbl : IDispatch
+	{
+		[helpstring("Speak the specified string using the currently active speech engine.")]
+[id(1)] VARIANT_BOOL Say([in] BSTR stringToSpeak, [in, defaultvalue(1)] VARIANT_BOOL interrupt);
+		[helpstring("Immediately stop speaking.")]
+[id(2)] VARIANT_BOOL Stop(void);
+		[helpstring("Set a speech parameter.")]
+[id(3)] VARIANT_BOOL SetValue([in] int what, [in] int value);
+		[helpstring("Retriev a speech parameter.")]
+[id(4)] int  GetValue([in] int what);
+		[helpstring("Set a speech parameter.")]
+[id(5)] VARIANT_BOOL SetString([in] int what, [in] BSTR value);
+		[helpstring("Retriev a speech parameter.")]
+[id(6)] BSTR GetString ([in] int what);
+	};
+
+	[uuid(06C98751-54F6-433D-A751-D180789A854D), helpstring("Universal speech object."), appobject]
+	coclass IUniversalSpeech
+	{
+		[default] interface IUniversalSpeechVTbl;
+	}
+}
+

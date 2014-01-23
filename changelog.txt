@@ -1,0 +1,10 @@
+Universal speech changelog
+
+Version 1.0, 04.11.2012
+Initial version
+
+Version 1.0.1, 14.04.2013
+- Added braille display support for the engines that support it. Jaws, NVDA, windows eye and system access have support for braille display.
+- Added jfwGetUserSettingsDirectory utility function in windows version
+- Corrected disstribution zip file
+

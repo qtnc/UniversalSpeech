@@ -1,0 +1,13 @@
+#include<windows.h>
+#include<stdlib.h>
+#include<stdio.h>
+
+int main (int argc, char** argv) {
+HANDLE h = LoadLibrary("..\\..\\bin\\UniversalSpeech.dll");
+BOOL(*nvdaGetRunningVersion)(char*,size_t) = NULL;
+nvdaGetRunningVersion = GetProcAddress(h, "nvdaGetRunningVersion");
+if (!nvdaGetRunningVersion) return 1;
+char buf[512]={0};
+nvdaGetRunningVersion(buf, 511);
+printf("Result = %s\r\n", buf);
+}

@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Universal speech test application</title>
+</head>
+<body>
+<script>
+var speech = new ActiveXObject("UniversalSpeech.Interface");
+
+document.write("<p>Here is a list of supported engines : </p>");
+document.write("<table><tr><th>ID</th><th>Name</th><th>AVailable</th></tr>");
+for (var i=0, name=null; (name = speech.GetString(0x40000+i))!=null && name.length>0; i++) {
+if (i>100) break;
+var avail = speech.GetValue(0x50000+i)!=0;
+document.write("<tr><td>" + i + "</td><td>" + name + "</td><td>" + (avail?"Yes":"No") + "</td></tr>");
+}
+document.write("</table>");
+
+setInterval(function(){
+speech.Say("You are using " + speech.GetString(0x40000+speech.GetValue(0x40000)));
+}, 3000);
+</script>
+</body>
+</html>
