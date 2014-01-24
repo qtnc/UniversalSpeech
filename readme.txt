@@ -3,7 +3,11 @@ Universal speech
 1. Description
 Universal speech goal is to unify and simplify the access to speech in applications. Speech can be done through active screen readers, direct synthesis or native/OS speech engines, depending on what is available and supported.
 Currently in its version 1.0, universal speech is only for windows, but I really hope that people will find it useful and port it to linux, macintosh, and why not mobile phones, tablets and other portable devices.
-If you want to contribute, send a mail to <webmaster@quentinc.net>
+If you want to contribute, contact me using the contact form at <http://quentinc.net/contact>
+This page is in french but should be sufficiently understandable.
+Note: e-mail removed from readme since it appears in clear on the github page
+
+A page of explanations in french is available on my website: <http://quentinc.net/universalspeech>
 
 Universal speech features :
 * Universal set of functions that automatically connect to the best suitable screen reader or speech synthesis engine found, and automatically switch to another one when the current one become unavailable
@@ -50,9 +54,9 @@ Most languages provide an FFI library to access native C/C++ DLLs. You can use t
 * Lua: example in test.lua that run with luajit 2.x with the included FFI library (does not work with standard lua 5.1.x or 5.2.x)
 
 Examples in one or more of these languages would be welcome :
-* python, using ctypes
+* python, using ctypes/CDLL
 * Ruby
-* C#/VB.net,  using C wrappers
+* C#/VB.net,  using C wrappers/interop
 * Other less popular languages ?
 
 3. Known issues
