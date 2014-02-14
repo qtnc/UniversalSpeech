@@ -1,4 +1,8 @@
 /**
+Copyright (c) 2011-2014, Quentin Cosendey
+This code is part of universal speech which is under multiple licenses.
+Please refer to the readme file provided with the package for more information.
+
 ZoomText driver for UniversalSpeech
 Copied and adapted from Tolk by Davy Kager <mail@davykager.nl>
 */
@@ -19,6 +23,7 @@ BOOL export ztUnload (void) {
 if (ztController)     ztController->lpVtbl->Release(ztController);
 ztController = NULL;
 ztSpeech = NULL;
+return TRUE;
 }
 
 BOOL export ztLoad (void) {

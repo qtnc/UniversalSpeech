@@ -37,6 +37,11 @@ int export cbrIsAvailable (void) ;
 int export cbrSayW (const wchar_t*, int) ;
 int export cbrBrailleW (const wchar_t*) ;
 int export cbrStopSpeech (void) ;
+int export ztLoad (void) ;
+int export ztUnload (void) ;
+int export ztIsAvailable (void) ;
+int export ztSayW (const wchar_t*, int);
+int export ztStopSpeech (void) ;
 int export sapiIsAvailable (void) ;
 int export sapiSayW (const wchar_t*, int) ;
 int export sapiStopSpeech (void) ;
@@ -45,9 +50,7 @@ int export sapiSetValue (int, int);
 int export sapiGetValue (int) ;
 const void* sapiGetString (int) ;
 
-static int doNothing () {
-return 1;
-}
+static int doNothing () { return 1; }
 
 const engine engines[] = {
 { .name=L"Jaws", .isAvailable=jfwIsAvailable, .unload=jfwUnload, .say=jfwSayW, .stop=jfwStopSpeech, .braille=jfwBrailleW, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
@@ -55,6 +58,7 @@ const engine engines[] = {
 { .name=L"NVDA", .isAvailable=nvdaIsAvailable, .unload=nvdaUnload, .say=nvdaSayW, .braille=nvdaBraille, .stop=nvdaStopSpeech, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"System access", .isAvailable=saIsAvailable, .unload=saUnload, .say=saSayW, .stop=saStopSpeech, .braille=saBrailleW, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"Supernova", .isAvailable=dolIsAvailable, .unload=dolUnload, .say=dolSay, .stop=dolStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
+{ .name=L"ZoomText", .isAvailable=ztIsAvailable, .unload=ztUnload, .say=ztSayW, .stop=ztStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"Cobra", .isAvailable=cbrIsAvailable, .unload=cbrUnload, .say=cbrSayW, .stop=cbrStopSpeech, .braille=cbrBrailleW, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"SAPI5", .isAvailable=sapiIsAvailable, .unload=sapiUnload, .say=sapiSayW, .stop=sapiStopSpeech, .braille=doNothing, .setValue=sapiSetValue, .getValue=sapiGetValue, .setString=NULL, .getString=sapiGetString  },
 { .name=NULL, .isAvailable=NULL, .unload=NULL, .stop=NULL, .say=NULL, .braille=NULL, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL }

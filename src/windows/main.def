@@ -73,6 +73,13 @@ cbrBrailleW
 cbrBrailleA
 cbrStopSpeech
 
+ztLoad
+ztUnload
+ztIsActive
+ztIsAvailable
+ztSayW
+ztStopSpeech
+
 sapiLoad
 sapiUnload
 sapiSayW
