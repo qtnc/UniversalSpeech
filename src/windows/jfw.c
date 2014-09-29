@@ -30,7 +30,7 @@ SAFE_RELEASE(jfw);
 }
 
 int export jfwIsAvailable () {
-return !!FindWindow("JFWUI2", "Jaws");
+return !!FindWindow("JFWUI2", NULL);
 }
 
 BOOL export jfwSayA (const char* str, BOOL interrupt) {

@@ -83,7 +83,7 @@ A work around is to explicitly tell the script to run regsvr32.exe at the end of
 This problem concern both 32 and 64 bit versions of windows.
 
 4. Copyright and license
-Copyright © 2011-2012, Quentin Cosendey http://quentinc.net/
+Copyright © 2011-2014, Quentin Cosendey http://quentinc.net/
 
 Universal speech is distributed in several different licenses
 
