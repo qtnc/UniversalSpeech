@@ -47,7 +47,7 @@ return c;
 
 const char* composePath (const char* dll) {
 static char path[300];
-GetModuleFileNameA(GetModuleHandleA("ScreenReaderAPI.dll"), path, 300);
+GetModuleFileNameA(GetModuleHandleA("UniversalSpeech.dll"), path, 300);
 char* c = strrchr(path,'\\');
 sprintf(c+1, "%s", dll);
 return path;

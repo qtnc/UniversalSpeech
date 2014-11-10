@@ -17,6 +17,18 @@ speechSetStringA
 brailleDisplay
 brailleDisplayA
 
+speechSetStringW = speechSetString
+sayStringA
+sayStringA@8 = sayStringA
+sayStringW
+sayStringW@8 = sayStringW
+stopSpeech
+brailleDisplayW = brailleDisplay
+brailleMessageW
+brailleMessageW@4 = brailleMessageW
+brailleMessageA
+brailleMessageA@4 = brailleMessageA
+
 jfwIsAvailable
 jfwSayA
 jfwSayW
