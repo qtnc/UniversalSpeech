@@ -11,3 +11,4 @@ Version 1.0.1, 14.04.2013
 Version 1.0.2, december 2013
 Added jfwGetRunningVersion and nvdaGetRunningVersion in windows distribution
 
+
