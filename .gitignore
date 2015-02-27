@@ -1,7 +1,8 @@
+*.dll
 *.exe
 *.zip
 *.o
 obj/*
 *.k
 *.k2
-out.txt
+out*
