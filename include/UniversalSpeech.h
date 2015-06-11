@@ -1,6 +1,7 @@
 #ifndef ____UNIVERSAL_SPEECH_H__
 #define ____UNIVERSAL_SPEECH_H__
-#if defined __WIN32 || defined __WIN64
+#if defined __WIN32 || defined __WIN64 || defined _WIN32 || defined _WIN64
+#define ____WINDOWS____
 #define export __declspec(dllexport)
 #else
 #error Platform currently unsupported

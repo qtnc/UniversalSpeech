@@ -9,12 +9,17 @@ Please refer to the readme file provided with the package for more information.
 static HHOOK hook = NULL;
 
 static LRESULT kbHook (int code, WPARAM wp, LPARAM lp) {
-//if (!win || !IsWindow(win)) uninstallHook();
-//else if (code == HC_ACTION) {
-//KBDLLHOOKSTRUCT* k = lp;
-//if (k->vkCode==VK_INSERT && (wp == WM_KEYDOWN || wp == WM_SYSKEYDOWN)) PostMessage(win, WM_KEYDOWN, VK_INSERT, 0);
-//if (k->vkCode==VK_INSERT && (wp == WM_KEYUP || wp==WM_SYSKEYUP)) PostMessage(win, WM_USER, k->vkCode, 0);
-//}
+if (code == HC_ACTION) {
+int k = ((KBDLLHOOKSTRUCT*)lp) ->vkCode;
+switch(k){
+case VK_UP: case VK_DOWN: case VK_LEFT: case VK_RIGHT:
+case VK_HOME: case VK_END: 
+case VK_DELETE: case VK_TAB:
+case VK_PRIOR: case VK_NEXT:
+case VK_BACK: case VK_ESCAPE: 
+return FALSE;
+default: break;
+}}
 return CallNextHookEx(hook, code, wp, lp);
 }
 
