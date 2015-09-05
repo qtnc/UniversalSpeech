@@ -41,7 +41,7 @@ else return FALSE;
 
 BOOL export dolSay (const wchar_t* str) {
 if (dolIsAvailable() && DolAccess_Command) {
-DolAccess_Command(str, (wstrlen(str)+1)*sizeof(wchar_t), 1);
+DolAccess_Command(str, (wcslen(str)+1)*sizeof(wchar_t), 1);
 return TRUE;
 }
 else return FALSE;
