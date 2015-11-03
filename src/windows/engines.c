@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
@@ -8,47 +8,47 @@ Please refer to the readme file provided with the package for more information.
 #include<windows.h>
 
 
-int export jfwIsAvailable (void) ;
-int export jfwSayW (const wchar_t*, int) ;
-int export jfwBrailleW (const wchar_t*) ;
-int export jfwStopSpeech (void) ;
-int export jfwUnload (void) ;
-int export nvdaIsAvailable (void) ;
-int export nvdaUnload (void) ;
-int export nvdaSayW (const wchar_t*, int) ;
-int export nvdaBraille (const wchar_t*) ;
-int export nvdaStopSpeech (void) ;
-int export weIsAvailable (void) ;
-int export weSayW (const wchar_t*, int) ;
-int export weBrailleW (const wchar_t*) ;
-int export weStopSpeech (void) ;
-int export weUnload (void) ;
-int export saUnload (void) ;
-int export saIsAvailable (void) ;
-int export saSayW (const wchar_t*, int) ;
-int export saBrailleW (const wchar_t*) ;
-int export saStopSpeech (void) ;
-int export dolUnload (void) ;
-int export dolIsAvailable (void) ;
-int export dolSay (const wchar_t*, int) ;
-int export dolStopSpeech (void) ;
-int export cbrUnload (void) ;
-int export cbrIsAvailable (void) ;
-int export cbrSayW (const wchar_t*, int) ;
-int export cbrBrailleW (const wchar_t*) ;
-int export cbrStopSpeech (void) ;
-int export ztLoad (void) ;
-int export ztUnload (void) ;
-int export ztIsAvailable (void) ;
-int export ztSayW (const wchar_t*, int);
-int export ztStopSpeech (void) ;
-int export sapiIsAvailable (void) ;
-int export sapiSayW (const wchar_t*, int) ;
-int export sapiStopSpeech (void) ;
-int export sapiUnload (void) ;
-int export sapiSetValue (int, int);
-int export sapiGetValue (int) ;
-const void* sapiGetString (int) ;
+export int jfwIsAvailable (void) ;
+export int jfwSayW (const wchar_t*, int) ;
+export int jfwBrailleW (const wchar_t*) ;
+export int jfwStopSpeech (void) ;
+export int jfwUnload (void) ;
+export int nvdaIsAvailable (void) ;
+export int nvdaUnload (void) ;
+export int nvdaSayW (const wchar_t*, int) ;
+export int nvdaBraille (const wchar_t*) ;
+export int nvdaStopSpeech (void) ;
+export int weIsAvailable (void) ;
+export int weSayW (const wchar_t*, int) ;
+export int weBrailleW (const wchar_t*) ;
+export int weStopSpeech (void) ;
+export int weUnload (void) ;
+export int saUnload (void) ;
+export int saIsAvailable (void) ;
+export int saSayW (const wchar_t*, int) ;
+export int saBrailleW (const wchar_t*) ;
+export int saStopSpeech (void) ;
+export int dolUnload (void) ;
+export int dolIsAvailable (void) ;
+export int dolSay (const wchar_t*, int) ;
+export int dolStopSpeech (void) ;
+export int cbrUnload (void) ;
+export int cbrIsAvailable (void) ;
+export int cbrSayW (const wchar_t*, int) ;
+export int cbrBrailleW (const wchar_t*) ;
+export int cbrStopSpeech (void) ;
+export int ztLoad (void) ;
+export int ztUnload (void) ;
+export int ztIsAvailable (void) ;
+export int ztSayW (const wchar_t*, int);
+export int ztStopSpeech (void) ;
+export int sapiIsAvailable (void) ;
+export int sapiSayW (const wchar_t*, int) ;
+export int sapiStopSpeech (void) ;
+export int sapiUnload (void) ;
+export int sapiSetValue (int, int);
+export int sapiGetValue (int) ;
+export const void* sapiGetString (int) ;
 
 static int doNothing () { return 1; }
 

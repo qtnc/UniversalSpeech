@@ -1,8 +1,9 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// dolphin.c: Dolphin's HAL/Supernova, using dolapi.dll
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 
@@ -12,7 +13,7 @@ static void(*__stdcall DolAccess_Action)(int) = NULL;
 static void(*__stdcall DolAccess_Command)(const wchar_t*, int, int)  = NULL;
 
 
-void export dolUnload (void) {
+export void dolUnload (void) {
 DolAccess_GetSystem = NULL;
 DolAccess_Action = NULL;
 DolAccess_Command = NULL;
@@ -20,7 +21,7 @@ if (dolphin) FreeLibrary(dolphin);
 dolphin = NULL;
 }
 
-BOOL export dolLoad (void) {
+export BOOL dolLoad (void) {
 dolUnload();
 dolphin = LoadLibrary(composePath("dolapi.dll"));
 if (!dolphin) return FALSE;
@@ -30,7 +31,7 @@ DolAccess_Command = GetProcAddress(dolphin, "_DolAccess_Command@12");
 return TRUE;
 }
 
-BOOL export dolIsAvailable (void) {
+export BOOL dolIsAvailable (void) {
 if (!DolAccess_GetSystem) dolLoad();
 if (DolAccess_GetSystem) {
 int result = DolAccess_GetSystem();
@@ -39,7 +40,7 @@ return (result==1 || result==4 || result==8);
 else return FALSE;
 }
 
-BOOL export dolSay (const wchar_t* str) {
+export BOOL dolSay (const wchar_t* str) {
 if (dolIsAvailable() && DolAccess_Command) {
 DolAccess_Command(str, (wcslen(str)+1)*sizeof(wchar_t), 1);
 return TRUE;
@@ -47,7 +48,7 @@ return TRUE;
 else return FALSE;
 }
 
-BOOL export dolStopSpeech (void) {
+export BOOL dolStopSpeech (void) {
 if (!DolAccess_Action) dolLoad();
 if (DolAccess_Action) {
 DolAccess_Action(141);

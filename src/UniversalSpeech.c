@@ -29,7 +29,7 @@ if (engines[i].isAvailable()) return i;
 return -1;
 }
 
-int export speechSay (const void* str, int interrupt) {
+export int speechSay (const ____wchar_t* str, int interrupt) {
 begin : if (current<0 && (current=detect())<0) return 0;
 if (!engines[current].say(str,interrupt) && !engines[current].isAvailable()) {
 engines[current].unload();
@@ -40,7 +40,7 @@ else periodicRetry();
 return 1;
 }
 
-int export speechStop (void) {
+export int speechStop (void) {
 begin : if (current<0 && (current=detect())<0) return 0;
 if (!engines[current].stop() && !engines[current].isAvailable()) {
 engines[current].unload();
@@ -51,7 +51,7 @@ else periodicRetry();
 return 1;
 }
 
-int export brailleDisplay (const void* str) {
+export int brailleDisplay (const ____wchar_t* str) {
 begin : if (current<0 && (current=detect())<0) return 0;
 if (!engines[current].braille(str) && !engines[current].isAvailable()) {
 engines[current].unload();
@@ -62,7 +62,7 @@ else periodicRetry();
 return 1;
 }
 
-int export speechGetValue (int what) {
+export int speechGetValue (int what) {
 switch(what){
 case SP_ENGINE: 
 if (current<0) current = detect();
@@ -78,7 +78,7 @@ if (current>=0 && engines[current].getValue) return engines[current].getValue(wh
 return 0;
 }
 
-int export speechSetValue (int what, int value) {
+export int speechSetValue (int what, int value) {
 switch(what){
 case SP_ENGINE: 
 if (value<0) {
@@ -103,33 +103,47 @@ if (current>=0 && engines[current].setValue) return engines[current].setValue(wh
 return 0;
 }
 
-const void* export speechGetString (int what) {
+export const ____wchar_t* speechGetString (int what) {
 if (what>=SP_ENGINE && what<SP_ENGINE+numEngines) return engines[what - SP_ENGINE].name;
 if (current<0) current=detect();
 if (current>=0 && engines[current].getString) return engines[current].getString(what);
 return NULL;
 }
 
-int export speechSetString (int what, const void* value) {
+export int speechSetString (int what, const ____wchar_t* value) {
 if (current<0) current=detect();
 if (current>=0 && engines[current].setString) return engines[current].setString(what, value);
 return 0;
 }
 
-int export speechSayA (const char* str, int interrupt) {
-return speechSay(ansi2unicode(str), interrupt);
+export int speechSayA (const char* str, int interrupt) {
+return speechSay(fromEncoding(str,0), interrupt);
 }
 
-int export brailleDisplayA (const char* str) {
-return brailleDisplay(ansi2unicode(str));
+export int brailleDisplayA (const char* str) {
+return brailleDisplay(fromEncoding(str,0));
 }
 
-const char* export speechGetStringA (int what) {
-return unicode2ansi(speechGetString(what));
+export const char* speechGetStringA (int what) {
+return toEncoding(speechGetString(what),0);
 }
 
-int export speechSetStringA (int what, const char* value) {
-return speechSetString(what, ansi2unicode(value));
+export int speechSetStringA (int what, const char* value) {
+return speechSetString(what, fromEncoding(value,0));
 }
 
+export int speechSayU (const char* str, int interrupt) {
+return speechSay(fromEncoding(str,65001), interrupt);
+}
 
+export int brailleDisplayU (const char* str) {
+return brailleDisplay(fromEncoding(str,65001));
+}
+
+export const char* speechGetStringU (int what) {
+return toEncoding(speechGetString(what),65001);
+}
+
+export int speechSetStringU (int what, const char* value) {
+return speechSetString(what, fromEncoding(value,65001));
+}

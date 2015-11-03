@@ -1,20 +1,21 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+//cbr.c: Cobra, using Baume COM objects
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 #include "disphelper.h"
 
 static IDispatch* cbr = NULL;
 
-void export cbrUnload () {
+export void cbrUnload () {
 SAFE_RELEASE(cbr);
 cbr = NULL;
 }
 
-BOOL export cbrIsAvailable (void) {
+export BOOL cbrIsAvailable (void) {
 static int found=0, last = 0;
 int z = GetTickCount();
 if (z-last<60000) return found;
@@ -23,7 +24,7 @@ found = FindProcess("cobra.exe", NULL, 0);
 return found;
 }
 
-BOOL export cbrLoad (void) {
+export BOOL cbrLoad (void) {
 dhAutoInit();
 if (cbr) return TRUE;
 IDispatch *broker=NULL, *cobra=NULL, *procobj=NULL;
@@ -40,31 +41,31 @@ SAFE_RELEASE(broker);
 return !!cbr;
 }
 
-BOOL export cbrStopSpeech (void) {
+export BOOL cbrStopSpeech (void) {
 if (!cbr && !cbrLoad()) return FALSE;
 dhCallMethod(cbr, L".speechStop()");
 return TRUE;
 }
 
-BOOL export cbrSayA (const char* str) {
+export BOOL cbrSayA (const char* str) {
 if (!cbr && !cbrLoad()) return FALSE;
 dhCallMethod(cbr, L".speechout(%s)", str);
 return TRUE;
 }
 
-BOOL export cbrSayW (const wchar_t* str) {
+export BOOL cbrSayW (const wchar_t* str) {
 if (!cbr && !cbrLoad()) return FALSE;
 dhCallMethod(cbr, L".speechout(%S)", str);
 return TRUE;
 }
 
-BOOL export cbrBrailleA (const char* str) {
+export BOOL cbrBrailleA (const char* str) {
 if (!cbr && !cbrLoad()) return FALSE;
 dhCallMethod(cbr, L".brailleout(%s)", str);
 return TRUE;
 }
 
-BOOL export cbrBrailleW (const wchar_t* str) {
+export BOOL cbrBrailleW (const wchar_t* str) {
 if (!cbr && !cbrLoad()) return FALSE;
 dhCallMethod(cbr, L".brailleout(%S)", str);
 return TRUE;

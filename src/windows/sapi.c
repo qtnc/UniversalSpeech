@@ -1,8 +1,9 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// sapi.c: SAPI5, using MS COM object
 #include "../../include/UniversalSpeech.h"
 #include<string.h>
 #include <objbase.h> 
@@ -12,7 +13,7 @@ Please refer to the readme file provided with the package for more information.
 
 extern int nativeSpeechEnabled;
 
-const wchar_t* export sapiGetVoiceNameW (int n) ;
+export const wchar_t* sapiGetVoiceNameW (int n) ;
 
 typedef int(*SapiWaveOutputCallback)(void*, void*, int) ;
 typedef struct sapiOutputBuffer sapiOutputBuffer;
@@ -94,11 +95,11 @@ return FALSE;
 }
 
 
-BOOL export sapiIsAvailable (void) {
+export BOOL sapiIsAvailable (void) {
 return nativeSpeechEnabled;
 }
 
-BOOL export sapiLoad () {
+export BOOL sapiLoad () {
 if (pVoice && cpEnum && category) return TRUE;
 dhAutoInit();
 hr = CoCreateInstance(&CLSID_SpVoice, NULL, CLSCTX_ALL, &IID_ISpVoice, (void **)&pVoice);    
@@ -106,7 +107,7 @@ if (SUCCEEDED(hr)) return sapiInit2();
 else return FALSE;
 }
 
-void export sapiUnload () {
+export void sapiUnload () {
 if (!pVoice || !cpEnum || !category) return;
 if (pVoice) pVoice->lpVtbl->Release(pVoice);
 if (cpEnum) cpEnum->lpVtbl->Release(cpEnum);
@@ -117,14 +118,14 @@ cpEnum = NULL;
 //CoUninitialize();    
 }
 
-BOOL export sapiStopSpeech () {
+export BOOL sapiStopSpeech () {
 if (!pVoice) return FALSE;
 hr = pVoice->lpVtbl->Speak(pVoice, NULL, SPF_IS_NOT_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
 if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-BOOL export sapiSayW (const WCHAR* str, BOOL interrupt) {
+export BOOL sapiSayW (const WCHAR* str, BOOL interrupt) {
 if ((!pVoice && !sapiLoad()) || !str) return FALSE;
 DWORD flags = SPF_IS_NOT_XML | SPF_ASYNC | (interrupt? SPF_PURGEBEFORESPEAK : 0);
 hr = pVoice->lpVtbl->Speak(pVoice, str, flags, NULL);
@@ -132,7 +133,7 @@ if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-BOOL export sapiSaySSMLW (const WCHAR* str, BOOL interrupt) {
+export BOOL sapiSaySSMLW (const WCHAR* str, BOOL interrupt) {
 if ((!pVoice && !sapiLoad()) || !str) return FALSE;
 DWORD flags = SPF_PERSIST_XML | SPF_IS_XML | SPF_ASYNC | (interrupt? SPF_PURGEBEFORESPEAK : 0);
 hr = pVoice->lpVtbl->Speak(pVoice, str, flags, NULL);
@@ -140,21 +141,21 @@ if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-BOOL export sapiSayA (const char* str, BOOL interrupt) {
+export BOOL sapiSayA (const char* str, BOOL interrupt) {
 const wchar_t* w = mb2wc(str, CP_ACP);
 BOOL re = sapiSayW(w,interrupt);
 free(w);
 return re;
 }
 
-BOOL export sapiSaySSMLA (const char* str, BOOL interrupt) {
+export BOOL sapiSaySSMLA (const char* str, BOOL interrupt) {
 const wchar_t* w = mb2wc(str, CP_ACP);
 BOOL re = sapiSaySSMLW(w,interrupt);
 free(w);
 return re;
 }
 
-BOOL export sapiSetRate (int rate) {
+export BOOL sapiSetRate (int rate) {
 if (!pVoice && !sapiLoad()) return FALSE;
 rate = (rate / 5) -10;
 if (rate>10) rate=10;
@@ -165,7 +166,7 @@ if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-int export sapiGetRate () {
+export int sapiGetRate () {
 if (!pVoice && !sapiLoad()) return -1;
 LONG rate;
 hr = pVoice->lpVtbl->GetRate(pVoice, &rate);
@@ -173,7 +174,7 @@ if (SUCCEEDED(hr)) return (rate +10) *5;
 else return -1;
 }
 
-BOOL export sapiSetVolume (int volume) {
+export BOOL sapiSetVolume (int volume) {
 if (!pVoice && !sapiLoad()) return FALSE;
 if (volume>100) volume=100;
 else if (volume<0) volume=0;
@@ -182,7 +183,7 @@ if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-int export sapiGetVolume () {
+export int sapiGetVolume () {
 if (!pVoice && !sapiLoad()) return -1;
 USHORT volume;
 hr = pVoice->lpVtbl->GetVolume(pVoice, &volume);
@@ -190,7 +191,7 @@ if (SUCCEEDED(hr)) return volume;
 else return -1;
 }
 
-BOOL export sapiSetPaused (BOOL paused) {
+export BOOL sapiSetPaused (BOOL paused) {
 if (!pVoice) return FALSE;
 if (paused) hr = pVoice->lpVtbl->Pause(pVoice);
 else hr = pVoice->lpVtbl->Resume(pVoice);
@@ -198,25 +199,25 @@ if (SUCCEEDED(hr)) { ispaused = paused; return TRUE; }
 else return FALSE;
 }
 
-BOOL export sapiIsPaused () {
+export BOOL sapiIsPaused () {
 return ispaused;
 }
 
-BOOL export sapiWait (int timeout) {
+export BOOL sapiWait (int timeout) {
 if (!pVoice) return FALSE;
 hr = pVoice->lpVtbl->WaitUntilDone(pVoice, timeout);
 if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-BOOL export sapiIsSpeaking  () {
+export BOOL sapiIsSpeaking  () {
 if (!pVoice) return FALSE;
 SPVOICESTATUS stat;
 hr = pVoice->lpVtbl->GetStatus(pVoice, &stat, NULL);
 return stat.dwRunningState != 1;
 }
 
-int export sapiGetNumVoices () {
+export int sapiGetNumVoices () {
 if (!cpEnum && !sapiLoad()) return -1;
 if (!cpEnum) return -1;
 int count = -1;
@@ -225,7 +226,7 @@ if (SUCCEEDED(hr)) return count;
 else return -1;
 }
 
-BOOL export sapiSetVoice (int n) {
+export BOOL sapiSetVoice (int n) {
 if (!pVoice && !sapiLoad()) return FALSE;
 if (!cpEnum || !pVoice) return FALSE;
 ISpObjectToken* token = NULL;
@@ -236,7 +237,7 @@ if (SUCCEEDED(hr)) { curVoice = n; return TRUE; }
 else return FALSE;
 }
 
-const wchar_t* export sapiGetVoiceNameW (int n) {
+export const wchar_t* sapiGetVoiceNameW (int n) {
 if (!cpEnum && !sapiLoad()) return NULL;
 if (!cpEnum) return NULL;
 ISpObjectToken* token = NULL;
@@ -248,7 +249,7 @@ if (SUCCEEDED(hr) && ch) return ch;
 else return NULL;
 }
 
-const char* export sapiGetVoiceNameA (int n) {
+export const char* sapiGetVoiceNameA (int n) {
 const wchar_t* wch = sapiGetVoiceNameW(n);
 if (!wch) return NULL;
 static const char* ch = NULL;
@@ -257,9 +258,9 @@ ch = wc2mb(wch, CP_ACP);
 return ch;
 }
 
-int export sapiGetVoice () { return curVoice; }
+export int sapiGetVoice () { return curVoice; }
 
-int export sapiGetValue (int what) {
+export int sapiGetValue (int what) {
 switch(what){
 case SP_RATE: return sapiGetRate();
 case SP_VOLUME: return sapiGetVolume();
@@ -283,7 +284,7 @@ default :
 return 0;
 }}
 
-int export sapiSetValue (int what, int value) {
+export int sapiSetValue (int what, int value) {
 switch(what){
 case SP_RATE : return sapiSetRate(value);
 case SP_VOLUME : return sapiSetVolume(value);
@@ -293,7 +294,7 @@ case SP_WAIT : return sapiWait(value);
 default : return 0;
 }}
 
-const wchar_t* export sapiGetString (int what) {
+export const wchar_t* sapiGetString (int what) {
 if (what>=SP_VOICE && what<=SP_VOICE+0xFFFF) return sapiGetVoiceNameW(what - SP_VOICE);
 return NULL;
 }
@@ -364,7 +365,7 @@ return this;
 
 static ICBStream* stream = 0;
 
-BOOL export sapiSetOutputCallback (int sampleRate, SapiWaveOutputCallback callback, void* udata) {
+export BOOL sapiSetOutputCallback (int sampleRate, SapiWaveOutputCallback callback, void* udata) {
 if (sampleRate<=0 || !callback) return S_OK == pVoice->lpVtbl->SetOutput(pVoice, NULL, FALSE);
 stream = ICBNew(sampleRate, callback, udata);
 if (!stream || !pVoice) return FALSE;

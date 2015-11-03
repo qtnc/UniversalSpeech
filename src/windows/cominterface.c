@@ -1,8 +1,9 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// cominterface.c: COM interface for Universal Speech
 #undef UNICODE
 #include <initguid.h>
 #include <windows.h>

@@ -2,7 +2,9 @@
 #define ____UNIVERSAL_SPEECH_H__
 #if defined __WIN32 || defined __WIN64 || defined _WIN32 || defined _WIN64
 #define ____WINDOWS____
-#define export __declspec(dllexport)
+#define export __declspec(dllexport) __cdecl
+#include<windows.h> // for wchar_t
+typedef wchar_t ____wchar_t;
 #else
 #error Platform currently unsupported
 #endif
@@ -86,42 +88,42 @@ The second parameter controls if this message must interrupt the currently spoke
 + A value of 0 means false, i.e. this message is appended to the queue and will be spoken after all previous messages are finished. 
 + Any value different than 0 means true, i.e. if something is currently spoken, it is interrupted and this message is immediately spoken, clearing the queue of messages still waiting.
 */
-int export speechSay (const void* str, int interrupt) ;
+export int speechSay (const ____wchar_t* str, int interrupt) ;
 
 /** ANSI version of the function above, for those who don't support unicode. */
-int export speechSayA (const char* str, int interrupt) ;
+export int speechSayA (const char* str, int interrupt) ;
 
 /** Send a message to be displayed on a braille display by the current engine, if supported
 All strings must be in unicode, i.e. use wchar_t, WCHAR, std::wstring
 */
-int export brailleDisplay (const void* str) ;
+export int brailleDisplay (const ____wchar_t* str) ;
 
 /** ANSI version of the function above, for those who don't support unicode. */
-int export brailleDisplayA (const char* str) ;
+export int brailleDisplayA (const char* str) ;
 
 
 /** Immediately stop speaking and clear the queue of pending messages */
-int export speechStop (void) ;
+export int speechStop (void) ;
 
 /** Query for an integer parameter. Look at the list of all parameters in the enum above */
-int export speechGetValue (int what) ;
+export int speechGetValue (int what) ;
 
 /** Request an integer parameter change. Look at the list of all parameters in the enum above. */
-int export speechSetValue (int what, int value) ;
+export int speechSetValue (int what, int value) ;
 
 /** Query for a string parameter. Look at the list of all parameters in the enum above.
 All strings are returned in unicode and don't have to be free by the caller unless otherwise specified.
  */
-const void* speechGetString (int what) ;
+export const ____wchar_t* speechGetString (int what) ;
 
 /** Request a parameter change. Look at the list of all parameters in the enum above. 
 All strings must be in unicode and don't have to be valid after the function has returned, unless otherwise specified.
 */
-int speechSetString (int what, const void* str) ;
+export int speechSetString (int what, const ____wchar_t* str) ;
 
 /** ANSI version of the functions above, for those who don't support unicode. */
-const char* export speechGetStringA (int what) ;
-int export speechSetStringA (int what, const char* value) ;
+export const char* speechGetStringA (int what) ;
+export int speechSetStringA (int what, const char* value) ;
 
 #ifdef __cplusplus
 } // extern "C"

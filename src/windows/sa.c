@@ -1,8 +1,9 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// sa.c: System Access, using saapi32.dll
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 
@@ -14,7 +15,7 @@ static void(*SA_SayA)(const char*) = NULL;
 static void(*SA_BrlShowTextW)(const wchar_t*) = NULL;
 static void(*SA_BrlShowTextA)(const char*) = NULL;
 
-void export saUnload (void) {
+export void saUnload (void) {
 SA_IsRunning = NULL;
 SA_StopAudio = NULL;
 SA_SayW = NULL;
@@ -25,7 +26,7 @@ if (systemaccess) FreeLibrary(systemaccess);
 systemaccess = NULL;
 }
 
-BOOL export saLoad (void) {
+export BOOL saLoad (void) {
 saUnload();
 systemaccess = LoadLibrary(composePath("SAAPI32.DLL"));
 if (!systemaccess) return FALSE;
@@ -37,37 +38,37 @@ LOAD(SA_BrlShowTextW) LOAD(SA_BrlShowTextA)
 return TRUE;
 }
 
-BOOL export saIsAvailable () {
+export BOOL saIsAvailable () {
 if (!SA_IsRunning) saLoad();
 if (SA_IsRunning) return SA_IsRunning();
 else return FALSE;
 }
 
-BOOL export saSayA (const char* str) {
+export BOOL saSayA (const char* str) {
 if (!SA_SayA && !saLoad()) return FALSE;
 if (SA_SayA) SA_SayA(str);
 return TRUE;
 }
 
-BOOL export saSayW (const wchar_t* str) {
+export BOOL saSayW (const wchar_t* str) {
 if (!SA_SayW && !saLoad()) return FALSE;
 if (SA_SayW) SA_SayW(str);
 return TRUE;
 }
 
-BOOL export saBrailleA (const char* str) {
+export BOOL saBrailleA (const char* str) {
 if (!SA_BrlShowTextA && !saLoad()) return FALSE;
 if (SA_BrlShowTextA) SA_BrlShowTextA(str);
 return TRUE;
 }
 
-BOOL export saBrailleW (const wchar_t* str) {
+export BOOL saBrailleW (const wchar_t* str) {
 if (!SA_BrlShowTextW && !saLoad()) return FALSE;
 if (SA_BrlShowTextW) SA_BrlShowTextW(str);
 return TRUE;
 }
 
-BOOL export saStopSpeech (void) {
+export BOOL saStopSpeech (void) {
 if (!SA_StopAudio && !saLoad()) return FALSE;
 if (SA_StopAudio) SA_StopAudio();
 return TRUE;

@@ -1,8 +1,9 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// nvda.c: Non-Visual Desktop Access (NVDA), using nvdaControllerClient.dll
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 
@@ -12,7 +13,7 @@ static int(*__stdcall nvdaController_cancelSpeech)(void) = NULL;
 static int(*__stdcall nvdaController_testIfRunning)(void) = NULL;
 static int(*__stdcall nvdaController_brailleMessage)(const wchar_t*) = NULL;
 
-void export nvdaUnload (void) {
+export void nvdaUnload (void) {
 nvdaController_cancelSpeech = NULL;
 nvdaController_testIfRunning = NULL;
 nvdaController_speakText = NULL;
@@ -21,7 +22,7 @@ if (nvda) FreeLibrary(nvda);
 nvda = NULL;
 }
 
-BOOL export nvdaLoad (void) {
+export BOOL nvdaLoad (void) {
 nvdaUnload();
 nvda = LoadLibrary(composePath("nvdaControllerClient.dll"));
 if (!nvda) nvda = LoadLibrary(composePath("nvdaControllerClient32.dll"));
@@ -33,36 +34,36 @@ LOAD(nvdaController_cancelSpeech) LOAD(nvdaController_brailleMessage)
 return TRUE;
 }
 
-BOOL export nvdaIsAvailable (void) {
+export BOOL nvdaIsAvailable (void) {
 if (!nvdaController_testIfRunning) nvdaLoad();
 if (nvdaController_testIfRunning) return !nvdaController_testIfRunning();
 else return FALSE;
 }
 
-BOOL export nvdaSay (const wchar_t* w) {
+export BOOL nvdaSay (const wchar_t* w) {
 if (!nvdaController_speakText) nvdaLoad();
 if (nvdaController_speakText) return !nvdaController_speakText(w);
 else return FALSE;
 }
 
-BOOL export nvdaBraille (const wchar_t* w) {
+export BOOL nvdaBraille (const wchar_t* w) {
 if (!nvdaController_brailleMessage) nvdaLoad();
 if (nvdaController_brailleMessage) return !nvdaController_brailleMessage(w);
 else return FALSE;
 }
 
-BOOL export nvdaStopSpeech (void) {
+export BOOL nvdaStopSpeech (void) {
 if (!nvdaController_cancelSpeech) nvdaLoad();
 if (nvdaController_cancelSpeech) return !nvdaController_cancelSpeech();
 else return FALSE;
 }
 
-int nvdaSayW (const wchar_t* str, int interrupt) {
+export int nvdaSayW (const wchar_t* str, int interrupt) {
 if (interrupt && !nvdaStopSpeech()) return FALSE;
 return nvdaSay(str);
 }
 
-BOOL export nvdaGetRunningVersion (char* buf, int bufmax) {
+export BOOL nvdaGetRunningVersion (char* buf, int bufmax) {
 if (!FindProcess("nvda.exe", buf, bufmax)) return FALSE;
 return GetProcessVersionInfo(buf, 2, buf, bufmax);
 }

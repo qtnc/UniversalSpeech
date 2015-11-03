@@ -1,8 +1,9 @@
 /*
-Copyright (c) 2011-2012, Quentin Cosendey
+Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// jfw.c: Jaws For Windows, using FSAPI / Freedomsci.JawsApi COM objects
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 #include "disphelper.h"
@@ -16,7 +17,7 @@ dhInitialize(TRUE);
 init = TRUE;
 }}
 
-BOOL export jfwLoad () {
+export BOOL jfwLoad () {
 dhAutoInit();
 if (jfw) SAFE_RELEASE(jfw);
 if (!jfw) dhCreateObject( L"FreedomSci.JawsApi", NULL, &jfw);
@@ -25,57 +26,57 @@ if (!jfw) dhCreateObject( L"JFWApi.1", NULL, &jfw);
 return !!jfw;
 }
 
-void export jfwUnload (void) {
+export void jfwUnload (void) {
 SAFE_RELEASE(jfw);
 }
 
-int export jfwIsAvailable () {
+export int jfwIsAvailable () {
 return !!FindWindow("JFWUI2", NULL);
 }
 
-BOOL export jfwSayA (const char* str, BOOL interrupt) {
+export BOOL jfwSayA (const char* str, BOOL interrupt) {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".SayString(%s,%b)", str, interrupt);
 return result;
 }
 
-BOOL export jfwSayW (const wchar_t* str, BOOL interrupt) {
+export BOOL jfwSayW (const wchar_t* str, BOOL interrupt) {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".SayString(%S,%b)", str, interrupt);
 return result;
 }
 
-BOOL export jfwRunScriptA (const char* scriptName) {
+export BOOL jfwRunScriptA (const char* scriptName) {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".RunScript(%s)", scriptName);
 return result;
 }
 
-BOOL export jfwRunScriptW (const wchar_t* scriptName) {
+export BOOL jfwRunScriptW (const wchar_t* scriptName) {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".RunScript(%S)", scriptName);
 return result;
 }
 
-BOOL export jfwRunFunctionA (const char* scriptName) {
+export BOOL jfwRunFunctionA (const char* scriptName) {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".RunFunction(%s)", scriptName);
 return result;
 }
 
-BOOL export jfwRunFunctionW (const wchar_t* scriptName) {
+export BOOL jfwRunFunctionW (const wchar_t* scriptName) {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".RunFunction(%S)", scriptName);
 return result;
 }
 
-BOOL export jfwBrailleA (const char* str) {
+export BOOL jfwBrailleA (const char* str) {
 int len = strlen(str);
 char buf[len+20];
 buf[0] = 0;
@@ -89,7 +90,7 @@ if (*c==34 || *c==92 || *c<32) *c=32;
 return jfwRunFunctionA(buf);
 }
 
-BOOL export jfwBrailleW (const wchar_t* str) {
+export BOOL jfwBrailleW (const wchar_t* str) {
 int len = wcslen(str);
 wchar_t buf[len+20];
 buf[0] = 0;
@@ -103,14 +104,14 @@ if (*c==34 || *c==92 || *c<32) *c=32;
 return jfwRunFunctionW(buf);
 }
 
-BOOL export jfwStopSpeech () {
+export BOOL jfwStopSpeech () {
 if (!jfw && !jfwLoad()) return FALSE;
 BOOL result = FALSE;
 dhGetValue(L"%b", &result, jfw, L".StopSpeech()");
 return result;
 }
 
-BOOL export jfwGetUserSettingsDirectory (char* buf, size_t bufmax) {
+export BOOL jfwGetUserSettingsDirectory (char* buf, size_t bufmax) {
 if (!FindProcess("jfw.exe", buf, bufmax)) return FALSE;
 char sVer[16]={0}, *tok=NULL, *appdata = getenv("APPDATA");
 tok = strtok(buf, "\\");
@@ -133,7 +134,7 @@ snprintf(buf+pos, bufmax-pos, "%s\\", fd.cFileName);
 return TRUE;
 }
 
-BOOL export jfwGetRunningVersion (char* buf, int bufmax) {
+export BOOL jfwGetRunningVersion (char* buf, int bufmax) {
 if (!FindProcess("jfw.exe", buf, bufmax)) return FALSE;
 return GetProcessVersionInfo(buf, 1, buf, bufmax);
 }
