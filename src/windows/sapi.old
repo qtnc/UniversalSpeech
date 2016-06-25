@@ -10,17 +10,6 @@ Please refer to the readme file provided with the package for more information.
 #include <sapi.h>  
 
 #define min(a,b) ((a)<(b)?a:b)
-struct {
-unsigned long data1;
-unsigned short data2, data3;
-unsigned long data4, data5;
-}
-Z_IID_ISpVoice = { 0x6C44DF74, 0x72B9, 0x4992, 0x99EFECA1, 0xD422046E },
-Z_IID_ISpObjectTokenCategory = { 0x2D3D3845, 0x39AF, 0x4850, 0xB440F9BB, 0x1D018097 },
-Z_SPDFID_WaveFormatEx = { 0xC31ADBAE, 0x527F, 0x4FF5, 0x2BF630A2, 0x0CF71FB6 },
-Z_IID_ISpStreamFormat = { 0xBED530BE, 0x2606, 0x4F4D, 0xC554C0A1, 0x6F56A5CD },
-Z_CLSID_SpVoice = { 0x96749377, 0x3391, 0x11D2, 0xC000E39E, 0x9673794F },
-Z_CLSID_SpObjectTokenCategory = { 0xA910187F, 0x0C7A, 0x45AC, 0xED59CC92, 0x537BB7AF };
 
 extern int nativeSpeechEnabled;
 
@@ -68,7 +57,7 @@ return !*s1 && !*s2;
 }
 
 static inline BOOL sapiInit2 () {
-hr = CoCreateInstance( &Z_CLSID_SpObjectTokenCategory, NULL, CLSCTX_ALL, &Z_IID_ISpObjectTokenCategory, (void**)&category );    
+hr = CoCreateInstance( &CLSID_SpObjectTokenCategory, NULL, CLSCTX_ALL, &IID_ISpObjectTokenCategory, (void**)&category );    
 if (!SUCCEEDED(hr)) goto error1;
 hr = category->lpVtbl->SetId(  category, SPCAT_VOICES, TRUE);
 if (!SUCCEEDED(hr)) goto error1;
@@ -113,7 +102,7 @@ return nativeSpeechEnabled;
 export BOOL sapiLoad () {
 if (pVoice && cpEnum && category) return TRUE;
 dhAutoInit();
-hr = CoCreateInstance(&Z_CLSID_SpVoice, NULL, CLSCTX_ALL, &Z_IID_ISpVoice, (void **)&pVoice);    
+hr = CoCreateInstance(&CLSID_SpVoice, NULL, CLSCTX_ALL, &IID_ISpVoice, (void **)&pVoice);    
 if (SUCCEEDED(hr)) return sapiInit2();
 else return FALSE;
 }
@@ -328,7 +317,7 @@ return S_OK;
 }
 
 static HRESULT __stdcall ICBGetFormat (ICBStream* this, GUID* guid, WAVEFORMATEX** wf) {
-*guid = *(GUID*)(&Z_SPDFID_WaveFormatEx);
+*guid = SPDFID_WaveFormatEx;
 *wf = &(this->fmt);
 return S_OK;
 }
@@ -344,7 +333,7 @@ return this->refcnt;
 static HRESULT __stdcall ICBQueryInterface (ICBStream* this, REFIID r, void** p) {
 hr = E_NOINTERFACE;
 *p = 0;
-if (IsEqualIID(r, &IID_IUnknown) || IsEqualIID(r, &IID_IStream) || IsEqualIID(r, &Z_IID_ISpStreamFormat)) {
+if (IsEqualIID(r, &IID_IUnknown) || IsEqualIID(r, &IID_IStream) || IsEqualIID(r, &IID_ISpStreamFormat)) {
 hr = NOERROR;
 *p = this;
 }
