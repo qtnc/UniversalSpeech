@@ -41,7 +41,10 @@ The header file contains function prototypes and their documentation.
 Import the provided class quentinc.UniversalSpeech. You can use it out of the box.
 You can look at Test.java as an example .
 
-## 2.3. Using the COM interface on windows
+## 2.3. From Python 3
+Take the file UniversalSpeech.py and import it as usual. It works out of the box.
+
+## 2.4. Using the COM interface on windows
 Before you can use the COM interface to the screen reader API DLL, you must first register it using regsvr32.exe by issuing the command: regsvr32 UniversalSpeech.dll. The type library UniversalSpeech.tlb must be in the same directory when doing the registration and you must also distribute it with your application.
 Then, use the ProgID "UniversalSpeech.Interface" to create an object. 
 Note: The DLL registration mainly consists of creating the required registry entries in HKEY_LOCAL_MACHINE\Software\Classes\UniversalSpeech.Interface  and the corresponding CLSIDs. Once the DLL is registered, you aren't supposed to move or rename it. Place it in a consist folder before registering.
@@ -53,14 +56,13 @@ Some other examples would be welcome :
 * VB6/VBA
 * C#/VB.net using COM
 
-## 2.4. From a language with an FFI library
+## 2.5. From a language with an FFI library
 Most languages provide an FFI library to access native C/C++ DLLs. You can use them to access the API with your favorite language.
 
 * Lua: example in test.lua that run with luajit 2.x with the included FFI library (does not work with standard lua 5.1.x or 5.2.x)
 
 Examples in one or more of these languages would be welcome :
 
-* python, using ctypes/CDLL
 * Ruby
 * C#/VB.net,  using C wrappers/interop
 * Other less popular languages ?
@@ -89,30 +91,7 @@ A work around is to explicitly tell the script to run regsvr32.exe at the end of
 This problem concern both 32 and 64 bit versions of windows.
 
 # 4. Copyright and license
-Copyright © 2011-2015, Quentin Cosendey http://quentinc.net/
+Copyright © 2011-2018, Quentin Cosendey http://quentinc.net/
 
-Universal speech is distributed in several different licenses
-
-## 4.1. GPL 
-As long as your program is free software, you can use universal speech for free in your program, subject to the GPL license
-See gpl.txt or http://www.gnu.org/licenses/gpl.html for more information
-
-## 4.2. Free license
-IF your software is closed source but gratis for your users, i.e. you don't make money out of your software, then you can use universal speech gratis.
-In that case, you can use and distribute universal speech with your application freely, but you aren't allowed to modify and distribute a modified version.  Please contribute if you want to add new features or new engines !
-As in other licenses, no guarantee is given for the well-functionning of the library. All responsibilities are declined when using universal speech.
-
-What is considered making money ?
-
-* OF course, selling your application directly to your customers, including via micro-paiement
-* Advertising or sponsoring in any form
-* Free-to-play, i.e. basicly free application but optional paiement to unlock certain features or gain advantages
-* Shareware, i.e. limited free version, while a full version can be purchased
-What is not making money ?
-* Optional donation, but only if the donator don't get any advantage and don't unlock any feature by donating
-
-## 4.3. Full license
-Please contact to arrange for a full commercial license.
-In that case, you can use and distribute universal speech with your application subject to the conditions defined, but you aren't allowed to modify and distribute a modified version.  Please contribute if you want to add new features or new engines !
-As in other licenses, no guarantee is given for the well-functionning of the library. All responsibilities are declined when using universal speech.
-
+UniversalSpeech is using MIT license.
+[Read full license texte in LICENSE.txt](LICENSE.txt).

@@ -20,24 +20,26 @@ AUTO_ENGINE = 0xFFFE
 USER_PARAM = 0x1000000
 
 
-def say (msg, interrupt=True):
-	return __uspeech.speechSay(msg, interrupt)
+def say (msg, interrupt=True): return __uspeech.speechSay(msg, interrupt)
+def sayA(msg, interrupt=True): return __uspeech.speechSayA(msg, interrupt)
 
-def braille (msg):
-	return __uspeech.brailleDisplay(msg)
+def braille (msg): return __uspeech.brailleDisplay(msg)
 
-def stop () :
-	return __uspeech.speechStop()
+#Added by Paulius LEveris <paulius.leveris@gmail.com>:
+def speech(msg):
+	"""Allows speech and braille in one place"""
+	say(msg);braille(msg)
 
-def getValue (what) :
-	return __uspeech.speechGetValue(what)
+def speechA(msg):
+	"""Allows to use sayA and braille in one place."""
+	sayA(msg);braille(msg)
 
-def setValue (what, value):
-	return __uspeech.speechSetValue(what, value)
+def stop () : return __uspeech.speechStop()
+
+def getValue (what) : return __uspeech.speechGetValue(what)
+
+def setValue (what, value): return __uspeech.speechSetValue(what, value)
 
 def getString (what):
 	__uspeech.speechGetString.restype = __ctypes.c_wchar_p
 	return __uspeech.speechGetString(what)	
-
-def setString (what, value):
-	return __uspeech.speechSetString(what, value)
