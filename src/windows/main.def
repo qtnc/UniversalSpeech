@@ -1,9 +1,6 @@
 LIBRARY UniversalSpeech
 EXPORTS
 DllMain PRIVATE
-DllCanUnloadNow		PRIVATE
-DllGetClassObject	PRIVATE
-DllRegisterServer PRIVATE
 
 speechSay
 speechSayA
@@ -114,6 +111,8 @@ sapiSetOutputCallback
 
 installKeyboardHook
 uninstallKeyboardHook
+FindProcess
+getProcessHandle
 
 Java_quentinc_UniversalSpeech_say
 Java_quentinc_UniversalSpeech_braille
