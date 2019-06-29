@@ -10,6 +10,7 @@ Please refer to the readme file provided with the package for more information.
 #include<string.h>
 #include <windows.h>
 #include <psapi.h>
+#include<tlhelp32.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include<string.h>
@@ -33,17 +34,30 @@ if (FileExists(buf)) return TRUE;
 return FALSE;
 }
 
-HANDLE getProcessHandle (const char* needle, char* pfn, size_t pfnsz) {
+HANDLE __declspec(dllexport) getProcessHandle (const char* needle, char* pfn, size_t pfnsz) {
+static BOOL(*WINAPI LPQueryFullProcessImageNameA)(HANDLE,DWORD,LPSTR,PDWORD) = NULL;
+if (!LPQueryFullProcessImageNameA) {
+HANDLE kernel32 = LoadLibrary("kernel32");
+LPQueryFullProcessImageNameA = GetProcAddress(kernel32, "QueryFullProcessImageNameA");
+FreeLibrary(kernel32);
+}
 char name[512]={0};
 DWORD nPids=0, pids[1024]={0};
 EnumProcesses(pids, 1024*sizeof(DWORD) ,&nPids);
 nPids/=sizeof(DWORD);
 int i; for (i=0; i<nPids; i++) {
-HANDLE h = OpenProcess(READ_CONTROL|PROCESS_QUERY_INFORMATION,0,pids[i]);
+HANDLE h = OpenProcess( PROCESS_QUERY_LIMITED_INFORMATION,0,pids[i]);
 if (!h) continue;
-if (!GetProcessImageFileName(h,name,512)) continue;
+DWORD namelen = 512;
+BOOL result = FALSE;
+if (LPQueryFullProcessImageNameA) result =  LPQueryFullProcessImageNameA(h, 0, name, &namelen);
+else result = GetProcessImageFileName(h,name,512);
+if (!result) continue;
 if(stristr(name, needle)) {
-if (pfn&&pfnsz>0) DriverPathToNormalPath(name, pfn, pfnsz);
+if (pfn&&pfnsz>0) {
+if (LPQueryFullProcessImageNameA) snprintf(pfn, pfnsz, "%s", name);
+else DriverPathToNormalPath(name, pfn, pfnsz);
+}
 return h;
 }
 CloseHandle(h);
@@ -51,7 +65,7 @@ CloseHandle(h);
 	return NULL;
 }
 
-BOOL FindProcess (const char* needle, char* buf, size_t bufsize) {
+BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize) {
 HANDLE h = getProcessHandle(needle, buf, bufsize);
 if (h) CloseHandle(h);
 return !!h;
