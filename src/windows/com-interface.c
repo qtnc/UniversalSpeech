@@ -8,7 +8,12 @@ Please refer to the readme file provided with the package for more information.
 #include <initguid.h>
 #include <windows.h>
 #include <objbase.h>
+#include<stdio.h>
+#include<stdlib.h>
 #include "../../include/UniversalSpeech.h"
+// COM interface for use from JScript, VBScript, powershell, and other COM clients
+
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
 
 // Universal speech library GUID
 // {4EB1B5DE-592E-4CBA-8230-D21D7456C38C}

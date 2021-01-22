@@ -7,6 +7,9 @@ Please refer to the readme file provided with the package for more information.
 #include "private.h"
 #include<stdlib.h> //For NULL
 
+char* toEncoding (const wchar_t* unicode, int targetEncoding);
+wchar_t* fromEncoding (const char* str, int encoding);
+
 extern const engine engines[];
 extern const int numEngines;
 int useDefault = 1;

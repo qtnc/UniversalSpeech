@@ -6,6 +6,12 @@ Please refer to the readme file provided with the package for more information.
 // sa.c: System Access, using saapi32.dll
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
+#include "encoding-conversion.h"
+
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
+void dhAutoInit (void);
+const char* composePath (const char* dll);
 
 static HINSTANCE systemaccess = NULL;
 static BOOL(*SA_IsRunning)(void) = NULL;

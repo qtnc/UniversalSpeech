@@ -8,6 +8,8 @@ Please refer to the readme file provided with the package for more information.
 #include "../private.h"
 #include<windows.h>
 
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
 
 export int jfwIsAvailable (void) ;
 export int jfwSayW (const wchar_t*, int) ;

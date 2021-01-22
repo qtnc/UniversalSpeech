@@ -7,7 +7,11 @@ Please refer to the readme file provided with the package for more information.
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
 #define IsKeyDown(k) (GetAsyncKeyState(k)<0)
+
+export void uninstallKeyboardHook (void);
 
 static HHOOK hook = NULL;
 
@@ -32,7 +36,7 @@ return CallNextHookEx(hook, code, wp, lp);
 
 export BOOL installKeyboardHook (void) {
 if (hook) uninstallKeyboardHook();
-if (hook) return;
+if (hook) return TRUE;
 hook = SetWindowsHookEx( WH_KEYBOARD_LL, kbHook, GetModuleHandle(NULL), NULL);
 return !!hook;
 }

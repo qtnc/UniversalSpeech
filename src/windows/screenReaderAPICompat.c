@@ -4,6 +4,7 @@ This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
 //ScreenReaderCompat.c: attempt a compatibility with old ScreenReaderAPI.dll
+#include "encoding-conversion.h"
 #include<windows.h>
 #include "../../include/UniversalSpeech.h"
 
@@ -24,7 +25,7 @@ export BOOL brailleMessageA (const char* str) {
 return brailleDisplayA(str);
 }
 
-export BOOL brailleMessageW (const char* str) {
+export BOOL brailleMessageW (const wchar_t* str) {
 return brailleDisplay(str);
 }
 
@@ -73,7 +74,7 @@ export int setCurrentScreenReaderNameW (const wchar_t* name) {
 return setCurrentScreenReader(getScreenReaderIdW(name));
 }
 
-export int setCurrentScreenReaderNameA (const wchar_t* name) {
+export int setCurrentScreenReaderNameA (const char* name) {
 return setCurrentScreenReader(getScreenReaderIdA(name));
 }
 
@@ -88,6 +89,9 @@ speechSetValue(SP_ENABLE_NATIVE_SPEECH, enable);
 export int getSupportedScreenReadersCount (void) {
 return numEngines;
 }
+
+BOOL sapiSetRate (int rate);
+int sapiGetRate (void);
 
 int __stdcall sapiGetRate2 (void) {
 return sapiGetRate();

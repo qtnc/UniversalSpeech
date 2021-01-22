@@ -6,6 +6,11 @@ Please refer to the readme file provided with the package for more information.
 // nvda.c: Non-Visual Desktop Access (NVDA), using nvdaControllerClient.dll
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
+#include "encoding-conversion.h"
+
+const char* composePath (const char* dll);
+BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize);
+BOOL GetProcessVersionInfo (const char* pfn, int mode, char* buf, int buflen);
 
 static HINSTANCE nvda = NULL;
 static int(*__stdcall nvdaController_speakText)(const wchar_t*)  = NULL;

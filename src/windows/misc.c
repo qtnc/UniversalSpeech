@@ -7,6 +7,9 @@ Please refer to the readme file provided with the package for more information.
 #include<windows.h>
 #include "../../include/UniversalSpeech.h"
 #include "../private.h"
+#include<stdio.h>
+#include<stdlib.h>
+#include "disphelper.h"
 
 
 const char* composePath (const char* dll) {
@@ -30,3 +33,9 @@ str++;
 return NULL;
 }
 
+void dhAutoInit (void) {
+static BOOL init = FALSE;
+if (!init) {
+dhInitialize(TRUE);
+init = TRUE;
+}}

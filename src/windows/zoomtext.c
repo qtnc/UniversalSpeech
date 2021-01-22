@@ -37,7 +37,7 @@ return ztController && ztSpeech;
 }
 
 export BOOL ztIsAvailable (void) {
-  return !!FindWindow(L"ZXSPEECHWNDCLASS", L"ZoomText Speech Processor");
+  return !!FindWindowW(L"ZXSPEECHWNDCLASS", L"ZoomText Speech Processor");
 }
 
 export BOOL ztIsActive (void) {

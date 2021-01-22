@@ -7,6 +7,11 @@ Please refer to the readme file provided with the package for more information.
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
+const char* composePath (const char* dll);
+BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize);
+
 static HINSTANCE dolphin = NULL;
 static int(*__stdcall DolAccess_GetSystem)(void) = NULL;
 static void(*__stdcall DolAccess_Action)(int) = NULL;

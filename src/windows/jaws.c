@@ -7,15 +7,13 @@ Please refer to the readme file provided with the package for more information.
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 #include "disphelper.h"
+#include "encoding-conversion.h"
+
+void dhAutoInit (void);
+BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize);
+BOOL GetProcessVersionInfo (const char* pfn, int mode, char* buf, int buflen);
 
 static IDispatch* jfw = NULL;
-
-void dhAutoInit (void) {
-static BOOL init = FALSE;
-if (!init) {
-dhInitialize(TRUE);
-init = TRUE;
-}}
 
 export BOOL jfwLoad () {
 dhAutoInit();
@@ -83,7 +81,7 @@ buf[0] = 0;
 strcat(buf, "BrailleString(\"");
 strcat(buf, str);
 strcat(buf, "\")");
-wchar_t *c = strchr(buf,34), *end = strrchr(buf,34);
+char *c = strchr(buf,34), *end = strrchr(buf,34);
 while (++c<end) {
 if (*c==34 || *c==92 || *c<32) *c=32;
 }

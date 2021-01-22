@@ -7,6 +7,11 @@ Please refer to the readme file provided with the package for more information.
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 #include "disphelper.h"
+#include "encoding-conversion.h"
+
+void dhAutoInit (void);
+const char* composePath (const char* dll);
+BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize);
 
 static IDispatch* cbr = NULL;
 

@@ -29,6 +29,9 @@
  * Make sure this file is set to compile as C and not C++ under
  * Project->Project Options->Files.
  */
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 
 
 #define DISPHELPER_INTERNAL_BUILD

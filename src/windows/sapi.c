@@ -8,8 +8,14 @@ Please refer to the readme file provided with the package for more information.
 #include<string.h>
 #include <objbase.h> 
 #include <sapi.h>  
+#include "disphelper.h"
+#include "encoding-conversion.h"
 
-#define min(a,b) ((a)<(b)?a:b)
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
+void dhAutoInit (void);
+export BOOL sapiLoad (void);
+
 struct {
 unsigned long data1;
 unsigned short data2, data3;
@@ -30,7 +36,7 @@ typedef int(*SapiWaveOutputCallback)(void*, void*, int) ;
 typedef struct sapiOutputBuffer sapiOutputBuffer;
 
 typedef struct {
-struct ICBStreamVtbl* lpVtbl;
+const struct ICBStreamVtbl* lpVtbl;
 SapiWaveOutputCallback callback;
 void* udata;
 DWORD refcnt;
@@ -67,6 +73,15 @@ while (*s1 && *s2 && *s1 == *s2) { s1++; s2++; }
 return !*s1 && !*s2;
 }
 
+export int sapiGetNumVoices (void) {
+if (!cpEnum && !sapiLoad()) return -1;
+if (!cpEnum) return -1;
+unsigned long count = 0;
+hr = cpEnum->lpVtbl->GetCount(cpEnum, &count);
+if (SUCCEEDED(hr)) return count;
+else return -1;
+}
+
 static inline BOOL sapiInit2 () {
 hr = CoCreateInstance( &Z_CLSID_SpObjectTokenCategory, NULL, CLSCTX_ALL, &Z_IID_ISpObjectTokenCategory, (void**)&category );    
 if (!SUCCEEDED(hr)) goto error1;
@@ -82,7 +97,8 @@ curVoice = -1;
 ISpObjectToken *vc, *p1;
 hr = pVoice->lpVtbl->GetVoice(pVoice, &vc);
 if (SUCCEEDED(hr)) {
-const wchar_t *s1 = NULL, *s2 = NULL;
+wchar_t *s1 = NULL;
+const wchar_t* s2 = NULL;
 hr = vc->lpVtbl->GetStringValue(vc, NULL, &s1);
 if (SUCCEEDED(hr)) {
 int i=0, n = sapiGetNumVoices();
@@ -110,7 +126,7 @@ export BOOL sapiIsAvailable (void) {
 return nativeSpeechEnabled;
 }
 
-export BOOL sapiLoad () {
+export BOOL sapiLoad (void) {
 if (pVoice && cpEnum && category) return TRUE;
 dhAutoInit();
 hr = CoCreateInstance(&Z_CLSID_SpVoice, NULL, CLSCTX_ALL, &Z_IID_ISpVoice, (void **)&pVoice);    
@@ -118,7 +134,7 @@ if (SUCCEEDED(hr)) return sapiInit2();
 else return FALSE;
 }
 
-export void sapiUnload () {
+export void sapiUnload (void) {
 if (!pVoice || !cpEnum || !category) return;
 if (pVoice) pVoice->lpVtbl->Release(pVoice);
 if (cpEnum) cpEnum->lpVtbl->Release(cpEnum);
@@ -129,7 +145,7 @@ cpEnum = NULL;
 //CoUninitialize();    
 }
 
-export BOOL sapiStopSpeech () {
+export BOOL sapiStopSpeech (void) {
 if (!pVoice) return FALSE;
 hr = pVoice->lpVtbl->Speak(pVoice, NULL, SPF_IS_NOT_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
 if (SUCCEEDED(hr)) return TRUE;
@@ -153,14 +169,14 @@ else return FALSE;
 }
 
 export BOOL sapiSayA (const char* str, BOOL interrupt) {
-const wchar_t* w = mb2wc(str, CP_ACP);
+wchar_t* w = mb2wc(str, CP_ACP);
 BOOL re = sapiSayW(w,interrupt);
 free(w);
 return re;
 }
 
 export BOOL sapiSaySSMLA (const char* str, BOOL interrupt) {
-const wchar_t* w = mb2wc(str, CP_ACP);
+wchar_t* w = mb2wc(str, CP_ACP);
 BOOL re = sapiSaySSMLW(w,interrupt);
 free(w);
 return re;
@@ -177,7 +193,7 @@ if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-export int sapiGetRate () {
+export int sapiGetRate (void) {
 if (!pVoice && !sapiLoad()) return -1;
 LONG rate;
 hr = pVoice->lpVtbl->GetRate(pVoice, &rate);
@@ -194,7 +210,7 @@ if (SUCCEEDED(hr)) return TRUE;
 else return FALSE;
 }
 
-export int sapiGetVolume () {
+export int sapiGetVolume (void) {
 if (!pVoice && !sapiLoad()) return -1;
 USHORT volume;
 hr = pVoice->lpVtbl->GetVolume(pVoice, &volume);
@@ -210,7 +226,7 @@ if (SUCCEEDED(hr)) { ispaused = paused; return TRUE; }
 else return FALSE;
 }
 
-export BOOL sapiIsPaused () {
+export BOOL sapiIsPaused (void) {
 return ispaused;
 }
 
@@ -226,15 +242,6 @@ if (!pVoice) return FALSE;
 SPVOICESTATUS stat;
 hr = pVoice->lpVtbl->GetStatus(pVoice, &stat, NULL);
 return stat.dwRunningState != 1;
-}
-
-export int sapiGetNumVoices () {
-if (!cpEnum && !sapiLoad()) return -1;
-if (!cpEnum) return -1;
-int count = -1;
-hr = cpEnum->lpVtbl->GetCount(cpEnum, &count);
-if (SUCCEEDED(hr)) return count;
-else return -1;
 }
 
 export BOOL sapiSetVoice (int n) {
@@ -263,13 +270,13 @@ else return NULL;
 export const char* sapiGetVoiceNameA (int n) {
 const wchar_t* wch = sapiGetVoiceNameW(n);
 if (!wch) return NULL;
-static const char* ch = NULL;
+static char* ch = NULL;
 if (ch) free(ch);
 ch = wc2mb(wch, CP_ACP);
 return ch;
 }
 
-export int sapiGetVoice () { return curVoice; }
+export int sapiGetVoice (void) { return curVoice; }
 
 export int sapiGetValue (int what) {
 switch(what){
@@ -352,7 +359,7 @@ return hr;
 }
 
 static ICBStream* ICBNew (int sampleRate, SapiWaveOutputCallback callback, void* udata) {
-ICBStream* this = malloc(sizeof(ICBStream));
+ICBStream* this = (ICBStream*)(malloc(sizeof(ICBStream)));
 if (!this) return 0;
 
 static const struct ICBStreamVtbl ICBLpVtbl = {

@@ -6,15 +6,14 @@ Please refer to the readme file provided with the package for more information.
 // Process list - useful to find out which screen reader is running
 #define _WIN32_WINNT 0x0501
 #undef UNICODE
-#include<stdlib.h>
-#include<stdio.h>
-#include<string.h>
 #include <windows.h>
 #include <psapi.h>
 #include<tlhelp32.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include<string.h>
+
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
 
 BOOL FileExists (const char* fn) {
 return GetFileAttributes(fn)!=INVALID_FILE_ATTRIBUTES;
@@ -46,7 +45,7 @@ char name[512]={0};
 DWORD nPids=0, pids[1024]={0};
 EnumProcesses(pids, 1024*sizeof(DWORD) ,&nPids);
 nPids/=sizeof(DWORD);
-int i; for (i=0; i<nPids; i++) {
+DWORD i; for (i=0; i<nPids; i++) {
 HANDLE h = OpenProcess( PROCESS_QUERY_LIMITED_INFORMATION,0,pids[i]);
 if (!h) continue;
 DWORD namelen = 512;

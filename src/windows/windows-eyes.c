@@ -4,9 +4,13 @@ This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
 // we.c: Windows eyes, using GWMicro COM object
+#include "encoding-conversion.h"
 #include "../../include/UniversalSpeech.h"
 #include<windows.h>
 #include "disphelper.h"
+#include "encoding-conversion.h"
+
+void dhAutoInit (void);
 
 static IDispatch* we = NULL;
 
