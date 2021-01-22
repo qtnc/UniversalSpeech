@@ -6,6 +6,7 @@ Please refer to the readme file provided with the package for more information.
 #include<stdio.h>
 #include<string.h>
 #include<wchar.h>
+#include<windows.h>
 
 static void* strptr = NULL;
 

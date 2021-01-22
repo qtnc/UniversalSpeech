@@ -17,11 +17,12 @@ switch(k){
 case VK_UP: case VK_DOWN: case VK_LEFT: case VK_RIGHT:
 case VK_HOME: case VK_END: 
 case VK_PRIOR: case VK_NEXT:
-case VK_DELETE: case VK_BACK: case VK_ESCAPE: 
+case VK_DELETE: case VK_BACK: case VK_ESCAPE:
+case 'T':
 if (IsKeyDown(VK_INSERT)) break;
 return FALSE;
-case VK_TAB :
-if (IsKeyDown(VK_MENU) ||  IsKeyDown(VK_INSERT)) break;
+case VK_TAB : case VK_SPACE:
+if (IsKeyDown(VK_MENU) ||  IsKeyDown(VK_INSERT) || IsKeyDown(VK_LMENU) || IsKeyDown(VK_RMENU)) break;
 return FALSE;
 default: break;
 }}
