@@ -209,7 +209,7 @@ static ULONG STDMETHODCALLTYPE GetIDsOfNames(IUniversalSpeech *this, REFIID riid
 static ULONG STDMETHODCALLTYPE Invoke(IUniversalSpeech *this, DISPID dispid, REFIID riid, LCID lcid, WORD wFlags, DISPPARAMS *params, VARIANT *result, EXCEPINFO *pexcepinfo, UINT *puArgErr)
 {
    // We implement only a "default" interface
-   if (!IsEqualIID(riid, &IID_NULL))
+   if (!IsEqualIID(riid, 0/*&IID_NULL*/)) //todo
       return(DISP_E_UNKNOWNINTERFACE);
 
 	// We need our type lib's TYPEINFO (to pass to DispInvoke)

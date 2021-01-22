@@ -3,6 +3,7 @@ Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+// Process list - useful to find out which screen reader is running
 #define _WIN32_WINNT 0x0501
 #undef UNICODE
 #include<stdlib.h>

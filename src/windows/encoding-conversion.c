@@ -3,6 +3,7 @@ Copyright (c) 2011-2015, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
+//Encoding conversion using windows routines
 #include<stdio.h>
 #include<string.h>
 #include<wchar.h>

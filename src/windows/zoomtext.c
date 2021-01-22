@@ -14,7 +14,7 @@ Copied and adapted from Tolk by Davy Kager <mail@davykager.nl>
 #define _COM_Outptr_
 #define _In_
 #define _Out_opt_
-#include "zt.h"
+#include "zoomtext.h"
 
 static   IZoomText2 *ztController = NULL;
 static   ISpeech2 *ztSpeech = NULL;

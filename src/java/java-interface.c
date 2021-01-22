@@ -3,7 +3,7 @@ Copyright (c) 2011-2012, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
-#include "../include/UniversalSpeech.h"
+#include "../../include/UniversalSpeech.h"
 #include "quentinc_UniversalSpeech.h"
 #include<wchar.h>
 #include<string.h>

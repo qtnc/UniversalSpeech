@@ -2,11 +2,11 @@
 *.exe
 *.zip
 *.o
+*.a
+*.lib
 *.class
 *.pyc
 *.pyo
 obj/*
-*.k
-*.k2
 out*
 test*

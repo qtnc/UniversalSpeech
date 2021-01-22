@@ -1,54 +1,52 @@
-EXENAME=openreader
-DEFINES=$(options) HAVE_W32API_H __WXMSW__ _UNICODE WXUSINGDLL NOPCH
+LIBNAME=UniversalSpeech
+DEFINES=$(options)
 
 ifeq ($(OS),Windows_NT)
 EXT_EXE=.exe
-EXT_DLL=.dll
+EXT_LIB=.dll
+LDFLAGS=-Wl,--add-stdcall-alias -Wl,--enable-stdcall-fixup -lole32 -loleaut32 -luuid -lpsapi -lversion
+DLLDEFS=src/windows/main.def
+SRCS=$(wildcard src/windows/*.c)
 else
 EXT_EXE=
-EXT_DLL=.so
+EXT_LIB=.so
+LDFLAGS=
+DLLDEFS=
+SRCS=
 endif
 
 ifeq ($(mode),release)
 NAME_SUFFIX=
 DEFINES += RELEASE
-CXXOPTFLAGS=-s -O3
+CCOPTFLAGS=-s -O3
 else
 NAME_SUFFIX=d
 DEFINES += DEBUG
-CXXOPTFLAGS=-g
+CCOPTFLAGS=-g
 endif
 
-EXECUTABLE=$(EXENAME)$(NAME_SUFFIX)$(EXT_EXE)
+LIBRARY=$(LIBNAME)$(NAME_SUFFIX)$(EXT_LIB)
 OBJDIR=obj$(NAME_SUFFIX)/
 
-CXX=g++
-WINDRES=windres
-WINDRESFLAGS=$(addprefix -D,$(DEFINES)) -I"C:\MinGW-W64\mingw32\i686-w64-mingw32\include"
-CXXFLAGS=-std=gnu++17 -Wextra $(addprefix -D,$(DEFINES)) -mthreads
-LDFLAGS=-lwxbase31u -lwxbase31u_xml -lwxmsw31u_core -lwxmsw31u_webview -L. -lUniversalSpeech -lxqilla -ltidy.dll -mthreads -mwindows
+CC=gcc
+CCFLAGS=-std=gnu99 -Wextra $(addprefix -D,$(DEFINES)) -mthreads
+LDFLAGSB=-shared -static-libgcc -Wl,--out-implib,lib$(LIBNAME)$(NAME_SUFFIX).a $(LDFLAGS)
 
-SRCS=$(wildcard *.cpp)
-RCSRCS=$(wildcard *.rc)
-OBJS=$(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
-RCOBJS=$(addprefix $(OBJDIR)rsrc/,$(RCSRCS:.rc=.o))
+SRCS+=$(wildcard src/*.c) $(wildcard src/java/*.c)
+OBJS=$(addprefix $(OBJDIR),$(SRCS:.c=.o))
 PERCENT=%
 
-all: $(EXECUTABLE)
+all: $(LIBRARY)
 
-.PHONY: $(EXECUTABLE)
+.PHONY: $(LIBRARY)
 
 clean:
 	rm -r $(OBJDIR)
 
-$(EXECUTABLE): $(RCOBJS) $(OBJS)
-	@$(CXX) $(CXXFLAGS) $(CXXOPTFLAGS) -o $@ $^ $(LDFLAGS)
+$(LIBRARY): $(OBJS) $(DLLDEFS)
+	@$(CC) $(CCFLAGS) $(CCOPTFLAGS) -o $@ $^ $(LDFLAGSB)
 
-$(OBJDIR)%.o: %.cpp $(wildcard %.hpp)
+$(OBJDIR)%.o: %.c $(wildcard %.h) $(wildcard include/*.h)
 	@mkdir -p $(dir $@)
-	@$(CXX) $(CXXFLAGS) $(CXXOPTFLAGS) -c -o $@ $<
-
-$(OBJDIR)rsrc/%.o: %.rc
-	@mkdir -p $(dir $@)
-	@$(WINDRES) $(WINDRESFLAGS) -o $@ $<
+	@$(CC) $(CCFLAGS) $(CCOPTFLAGS) -c -o $@ $<
 
