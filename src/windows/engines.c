@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015, Quentin Cosendey
+Copyright (c) 2011-2021, Quentin Cosendey
 This code is part of universal speech which is under multiple licenses.
 Please refer to the readme file provided with the package for more information.
 */
@@ -52,6 +52,7 @@ export int sapiUnload (void) ;
 export int sapiSetValue (int, int);
 export int sapiGetValue (int) ;
 export const void* sapiGetString (int) ;
+export int narIsAvailable (void) ;
 
 static int doNothing () { return 1; }
 
@@ -63,6 +64,7 @@ const engine engines[] = {
 { .name=L"Supernova", .isAvailable=dolIsAvailable, .unload=dolUnload, .say=dolSay, .stop=dolStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"ZoomText", .isAvailable=ztIsAvailable, .unload=ztUnload, .say=ztSayW, .stop=ztStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"Cobra", .isAvailable=cbrIsAvailable, .unload=cbrUnload, .say=cbrSayW, .stop=cbrStopSpeech, .braille=cbrBrailleW, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
+{ .name=L"Narrator", .isAvailable=narIsAvailable, .unload=doNothing, .say=doNothing, .stop=doNothing, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"SAPI5", .isAvailable=sapiIsAvailable, .unload=sapiUnload, .say=sapiSayW, .stop=sapiStopSpeech, .braille=doNothing, .setValue=sapiSetValue, .getValue=sapiGetValue, .setString=NULL, .getString=sapiGetString  },
 { .name=NULL, .isAvailable=NULL, .unload=NULL, .stop=NULL, .say=NULL, .braille=NULL, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL }
 };
