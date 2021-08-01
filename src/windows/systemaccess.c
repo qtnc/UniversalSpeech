@@ -11,7 +11,7 @@ Please refer to the readme file provided with the package for more information.
 #pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
 
 void dhAutoInit (void);
-const char* composePath (const char* dll);
+const wchar_t* composePath (const wchar_t* dll);
 
 static HINSTANCE systemaccess = NULL;
 static BOOL(*SA_IsRunning)(void) = NULL;
@@ -34,7 +34,7 @@ systemaccess = NULL;
 
 export BOOL saLoad (void) {
 saUnload();
-systemaccess = LoadLibrary(composePath("SAAPI32.DLL"));
+systemaccess = LoadLibraryW(composePath(L"SAAPI32.DLL"));
 if (!systemaccess) return FALSE;
 #define LOAD(f) { f = GetProcAddress(systemaccess,#f); if (!f) { saUnload(); return FALSE; }}
 LOAD(SA_IsRunning) LOAD(SA_StopAudio)

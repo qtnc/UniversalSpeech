@@ -12,11 +12,11 @@ Please refer to the readme file provided with the package for more information.
 #include "disphelper.h"
 
 
-const char* composePath (const char* dll) {
-static char path[300];
-GetModuleFileNameA(GetModuleHandleA("UniversalSpeech.dll"), path, 300);
-char* c = strrchr(path,'\\');
-sprintf(c+1, "%s", dll);
+const wchar_t* composePath (const wchar_t* dll) {
+static wchar_t path[300];
+GetModuleFileNameW(GetModuleHandleW(L"UniversalSpeech.dll"), path, 300);
+wchar_t* c = wcsrchr(path, L'\\');
+swprintf(c+1, (path-c)-3, L"%s", dll);
 return path;
 }
 

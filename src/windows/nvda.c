@@ -8,7 +8,7 @@ Please refer to the readme file provided with the package for more information.
 #include<windows.h>
 #include "encoding-conversion.h"
 
-const char* composePath (const char* dll);
+const wchar_t* composePath (const wchar_t* dll);
 BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize);
 BOOL GetProcessVersionInfo (const char* pfn, int mode, char* buf, int buflen);
 
@@ -29,8 +29,8 @@ nvda = NULL;
 
 export BOOL nvdaLoad (void) {
 nvdaUnload();
-nvda = LoadLibrary(composePath("nvdaControllerClient.dll"));
-if (!nvda) nvda = LoadLibrary(composePath("nvdaControllerClient32.dll"));
+nvda = LoadLibraryW(composePath(L"nvdaControllerClient.dll"));
+if (!nvda) nvda = LoadLibraryW(composePath(L"nvdaControllerClient32.dll"));
 if (!nvda) return FALSE;
 #define LOAD(f) { f=GetProcAddress(nvda,#f); if (!f) { nvdaUnload(); return FALSE; }}
 LOAD(nvdaController_testIfRunning) LOAD(nvdaController_speakText)

@@ -9,7 +9,7 @@ Please refer to the readme file provided with the package for more information.
 
 #pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
 
-const char* composePath (const char* dll);
+const wchar_t* composePath (const wchar_t* dll);
 BOOL __declspec(dllexport) FindProcess (const char* needle, char* buf, size_t bufsize);
 
 static HINSTANCE dolphin = NULL;
@@ -28,7 +28,7 @@ dolphin = NULL;
 
 export BOOL dolLoad (void) {
 dolUnload();
-dolphin = LoadLibrary(composePath("dolapi.dll"));
+dolphin = LoadLibraryW(composePath(L"dolapi.dll"));
 if (!dolphin) return FALSE;
 DolAccess_GetSystem = GetProcAddress(dolphin, "_DolAccess_GetSystem@0");
 DolAccess_Action = GetProcAddress(dolphin, "_DolAccess_Action@4");
