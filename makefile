@@ -47,6 +47,6 @@ $(LIBRARY): $(OBJS) $(DLLDEFS)
 	@$(CC) $(CCFLAGS) $(CCOPTFLAGS) -o $@ $^ $(LDFLAGSB)
 
 $(OBJDIR)%.o: %.c $(wildcard %.h) $(wildcard include/*.h)
-	@mkdir -p $(dir $@)
+	@mkdir.exe -p $(dir $@)
 	@$(CC) $(CCFLAGS) $(CCOPTFLAGS) -c -o $@ $<
 

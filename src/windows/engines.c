@@ -45,6 +45,12 @@ export int ztUnload (void) ;
 export int ztIsAvailable (void) ;
 export int ztSayW (const wchar_t*, int);
 export int ztStopSpeech (void) ;
+export int zdsrLoad (void);
+export int zdsrUnload (void);
+export int zdsrIsAvailable (void);
+export int zdsrIsSpeaking (void);
+export int zdsrStopSpeech (void);
+export int zdsrSayW (const wchar_t*, int);
 export int sapiIsAvailable (void) ;
 export int sapiSayW (const wchar_t*, int) ;
 export int sapiStopSpeech (void) ;
@@ -63,6 +69,7 @@ const engine engines[] = {
 { .name=L"System access", .isAvailable=saIsAvailable, .unload=saUnload, .say=saSayW, .stop=saStopSpeech, .braille=saBrailleW, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"Supernova", .isAvailable=dolIsAvailable, .unload=dolUnload, .say=dolSay, .stop=dolStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"ZoomText", .isAvailable=ztIsAvailable, .unload=ztUnload, .say=ztSayW, .stop=ztStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
+{ .name=L"ZDSR", .isAvailable=zdsrIsAvailable, .unload=zdsrUnload, .say=zdsrSayW, .stop=zdsrStopSpeech, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"Cobra", .isAvailable=cbrIsAvailable, .unload=cbrUnload, .say=cbrSayW, .stop=cbrStopSpeech, .braille=cbrBrailleW, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"Narrator", .isAvailable=narIsAvailable, .unload=doNothing, .say=doNothing, .stop=doNothing, .braille=doNothing, .setValue=NULL, .getValue=NULL, .setString=NULL, .getString=NULL  },
 { .name=L"SAPI5", .isAvailable=sapiIsAvailable, .unload=sapiUnload, .say=sapiSayW, .stop=sapiStopSpeech, .braille=doNothing, .setValue=sapiSetValue, .getValue=sapiGetValue, .setString=NULL, .getString=sapiGetString  },
