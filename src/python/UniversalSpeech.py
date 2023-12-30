@@ -1,5 +1,11 @@
 import ctypes as __ctypes
-__uspeech = __ctypes.cdll.UniversalSpeech
+import os
+import sys
+
+# Specify the full path to the DLL
+current_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+dll_path = os.path.join(current_dir, "UniversalSpeech.dll")
+__uspeech = __ctypes.CDLL(dll_path)
 
 VOLUME, VOLUME_MAX, VOLUME_MIN, VOLUME_SUPPORTED, \
 RATE, RATE_MAX, RATE_MIN, RATE_SUPPORTED, \
@@ -18,7 +24,6 @@ ENGINE = 0x40000
 ENGINE_AVAILABLE = 0x50000
 AUTO_ENGINE = 0xFFFE
 USER_PARAM = 0x1000000
-
 
 def say (msg, interrupt=True): return __uspeech.speechSay(msg, interrupt)
 def sayA(msg, interrupt=True): return __uspeech.speechSayA(msg, interrupt)
