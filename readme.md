@@ -28,6 +28,7 @@ Supported engines on windows :
 * System access, using saapi32.dll
 * Supernova, using dolapi.dll
 * Cobra, partially, using COM control provided by Baume
+* ZangDu Screen reader (ZDSR)
 * SAPI 5, using MS standard C/WIN32 API 
 
 # 2. Using universal speech
@@ -59,7 +60,7 @@ Some other examples would be welcome :
 ## 2.5. From a language with an FFI library
 Most languages provide an FFI library to access native C/C++ DLLs. You can use them to access the API with your favorite language.
 
-* Lua: example in test.lua that run with luajit 2.x with the included FFI library (does not work with standard lua 5.1.x or 5.2.x)
+* Lua: example in test.lua that run with luajit 2.x with the included FFI library (does not work with standard lua 5.x)
 
 Examples in one or more of these languages would be welcome :
 
@@ -67,30 +68,38 @@ Examples in one or more of these languages would be welcome :
 * C#/VB.net,  using C wrappers/interop
 * Other less popular languages ?
 
-# 3. Known issues
+# 3. Download 
 
-## 3.1. Keyboard hook
+You can download latest precompiled DLLs here, containing both 32 and 64 bit versions:
+http://vrac.quentinc.net/UniversalSpeech.zip
+
+- 64 bit version has been built with MinGW-W64 / GCC 13 on 2024-04-08
+- 32 bit version has been built with MinGW-W64 / GCC 8 on 2022-07-31
+
+# 4. Known issues
+
+## 4.1. Keyboard hook
 Keyboard hook could be used to bypass jaws keyboard hook that could be problematic for games. The most known problem of that sort is arrow keys not working or with a delay.
 The hook installed by your application must be explicitely uninstalled at exit. You should also uninstall it when the user switches to another application (Alt+Tab), and reinstall it when he comes back to it.
 Other applications wont work correctly with jaws when the custom keyboard hook is active and average users wont understand what's going on if it remain active outside of your application.
 Note that the hook may not work as expected. Use this feature as your own risk.
 
-## 3.2. Jaws sleep mode
+## 4.2. Jaws sleep mode
 When jaws is running but in sleep mode, it is still detected by ScreenReaderAPI, allthough nothing can be spoken through it.  Its successful detection prevent another screen reader or SAPI5 from being used.
 IN that case, the only solution is to force the use of another engine.
 Sleep mode can't be detected properly by ScreenReaderAPI, and is highly discouraged by freedom scientific.
 
-## 3.3. SAPI5 issue
+## 4.3. SAPI5 issue
 For an unknown reason, it is impossible to retriev number of voices available, get voice names, or get or set current SAPI5 voice on certain computers.
 That has already been noticed at least once on windows 7 64 bits. This is probably because UniversalSpeech is basicly compiled in 32 bits (you can probably recompile it in 64 bits if you want), and because there are conflicts between 32 and 64 bits voices.
 Any other information about that problem is welcome.
 
-## 3.4. Registering the COM server in an inno setup script
+## 4.4. Registering the COM server in an inno setup script
 For an unknown reason, inno setup scripts fail to register UniversalSpeech when using the regserver flag in the files section (it returns an error #5)
 A work around is to explicitly tell the script to run regsvr32.exe at the end of the installation, in the run section.
 This problem concern both 32 and 64 bit versions of windows.
 
-# 4. Copyright and license
+# 5. Copyright and license
 Copyright © 2011-2018, Quentin Cosendey http://quentinc.net/
 
 UniversalSpeech is using MIT license.
