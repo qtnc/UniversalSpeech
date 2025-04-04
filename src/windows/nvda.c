@@ -32,7 +32,7 @@ nvdaUnload();
 nvda = LoadLibraryW(composePath(L"nvdaControllerClient.dll"));
 if (!nvda) nvda = LoadLibraryW(composePath(L"nvdaControllerClient32.dll"));
 if (!nvda) return FALSE;
-#define LOAD(f) { f=GetProcAddress(nvda,#f); if (!f) { nvdaUnload(); return FALSE; }}
+#define LOAD(f) { *(void**)(&f) = (void*)GetProcAddress(nvda, #f); if (!f) { nvdaUnload(); return FALSE; }}
 LOAD(nvdaController_testIfRunning) LOAD(nvdaController_speakText)
 LOAD(nvdaController_cancelSpeech) LOAD(nvdaController_brailleMessage)
 #undef LOAD

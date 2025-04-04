@@ -34,7 +34,7 @@ systemaccess = NULL;
 
 export BOOL saLoad (void) {
 saUnload();
-systemaccess = LoadLibraryW(composePath(L"SAAPI32.DLL"));
+systemaccess = LoadLibraryW(composePath(L"sa_api.DLL"));
 if (!systemaccess) return FALSE;
 #define LOAD(f) { f = GetProcAddress(systemaccess,#f); if (!f) { saUnload(); return FALSE; }}
 LOAD(SA_IsRunning) LOAD(SA_StopAudio)

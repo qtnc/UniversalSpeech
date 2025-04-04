@@ -29,7 +29,7 @@ export BOOL zdsrLoad (void) {
 zdsrUnload();
 zdsr = LoadLibraryW(composePath(L"zdsrapi.dll"));
 if (!zdsr) return FALSE;
-#define LOAD(f) { f=GetProcAddress(zdsr,#f); if (!f) { zdsrUnload(); return FALSE; }}
+#define LOAD(f) { *(void**)(&f) = (void*)GetProcAddress(zdsr, #f); if (!f) { zdsrUnload(); return FALSE; }}
 LOAD(InitTTS) LOAD(GetSpeakState)
 LOAD(Speak) LOAD(StopSpeak)
 #undef LOAD

@@ -53,7 +53,7 @@ BOOL result = FALSE;
 if (LPQueryFullProcessImageNameA) result =  LPQueryFullProcessImageNameA(h, 0, name, &namelen);
 else result = GetProcessImageFileName(h,name,512);
 if (!result) continue;
-if(stristr(name, needle)) {
+if(strstr(name, needle)) {
 if (pfn&&pfnsz>0) {
 if (LPQueryFullProcessImageNameA) snprintf(pfn, pfnsz, "%s", name);
 else DriverPathToNormalPath(name, pfn, pfnsz);
